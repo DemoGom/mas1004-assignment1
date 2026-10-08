@@ -7,7 +7,13 @@ that the model can eat.
 Run `pytest tests/test_data.py` after you fill them in.
 """
 
+from pathlib import Path
+
 import numpy as np
+import torch
+import torchvision.transforms as T
+from PIL import Image
+from torchvision.transforms import InterpolationMode
 
 # Files with any other extension should be ignored.
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
@@ -50,7 +56,15 @@ def prepare_image(image):
     The web page does these same six steps in JavaScript. If your version is
     different, the self test badge at the top of your page turns red.
     """
-    raise NotImplementedError("Problem 2: fill in prepare_image")
+    transform = T.Compose([
+        T.Resize(RESIZE, interpolation=InterpolationMode.BILINEAR),
+        T.CenterCrop(CROP),
+        T.ToTensor(),
+        T.Normalize(MEAN, STD),
+    ])
+    image = image.convert("RGB")
+    tensor = transform(image)
+    return tensor.numpy().astype(np.float32)
 
 
 def load_folder(root):
@@ -83,7 +97,34 @@ def load_folder(root):
     Memory: every image becomes 3 x 224 x 224 numbers of 4 bytes, about 0.6 MB.
     750 images is about 450 MB. That fits on Colab and on most laptops.
     """
-    raise NotImplementedError("Problem 2: fill in load_folder")
+    root = Path(root)
+    class_names = sorted(
+        d.name for d in root.iterdir() if d.is_dir()
+    )
+
+    X_list = []
+    y_list = []
+    paths_list = []
+
+    for class_index, class_name in enumerate(class_names):
+        class_dir = root / class_name
+        image_files = sorted(
+            p for p in class_dir.iterdir()
+            if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES
+        )
+        for path in image_files:
+            try:
+                image = Image.open(path)
+                prepared = prepare_image(image)
+                X_list.append(prepared)
+                y_list.append(class_index)
+                paths_list.append(path)
+            except Exception:
+                continue
+
+    X = np.stack(X_list).astype(np.float32)
+    y = np.array(y_list, dtype=np.int64)
+    return X, y, class_names, paths_list
 
 
 def split_train_test(X, y, paths, test_ratio=0.2, seed=0):
@@ -102,4 +143,32 @@ def split_train_test(X, y, paths, test_ratio=0.2, seed=0):
         up with a class that has no test images at all, and then your accuracy
         number means nothing.
     """
-    raise NotImplementedError("Problem 2: fill in split_train_test")
+    rng = np.random.default_rng(seed)
+    num_classes = int(y.max()) + 1
+
+    train_indices = []
+    test_indices = []
+
+    for class_index in range(num_classes):
+        class_mask = y == class_index
+        class_indices = np.where(class_mask)[0]
+        rng.shuffle(class_indices)
+
+        n_test = max(1, int(len(class_indices) * test_ratio))
+        n_train = len(class_indices) - n_test
+
+        test_indices.extend(class_indices[:n_test].tolist())
+        train_indices.extend(class_indices[n_test:].tolist())
+
+    train_indices = np.array(train_indices)
+    test_indices = np.array(test_indices)
+
+    X_train = X[train_indices]
+    y_train = y[train_indices]
+    paths_train = [paths[i] for i in train_indices]
+
+    X_test = X[test_indices]
+    y_test = y[test_indices]
+    paths_test = [paths[i] for i in test_indices]
+
+    return X_train, y_train, paths_train, X_test, y_test, paths_test

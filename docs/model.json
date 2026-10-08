@@ -1,0 +1,27 @@
+{
+  "format": "mas1004-onnx-v1",
+  "labels": [
+    "chiikawa_character",
+    "hachiware_character",
+    "usagi_character"
+  ],
+  "input": {
+    "name": "image",
+    "resize": 256,
+    "crop": 224,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "output": {
+    "name": "logits"
+  },
+  "n_parameters": 11178051
+}
