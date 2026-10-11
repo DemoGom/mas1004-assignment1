@@ -1,0 +1,14 @@
+class                    downloaded  removed   kept  other
+chiikawa_character              150       27    104     19
+hachiware_character             150       18    110     22
+usagi_character                 150       18     99     33
+
+reasons
+    38  multiple characters mixed
+    12  wrong character (not Chiikawa)
+     6  human photo, not character features
+     4  wrong character (not Hachiware)
+     2  human drawing, not character features
+     1  wrong character (not Usagi)
+
+"other" is images that are in data/raw but neither in data/clean nor removed with `clean.py remove`, for example ones you deleted by hand. Their reasons are not recorded.

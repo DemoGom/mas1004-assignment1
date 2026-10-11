@@ -1,0 +1,59 @@
+MAS1004 Assignment 1, checking your work
+
+Training images  (/Users/demo/Documents/mas1004-assignment1/data/clean)
+-----------------------------------------------------------------------
+  chiikawa_character             104 images
+  hachiware_character            110 images
+  usagi_character                 99 images
+
+Your images from a new source  (/Users/demo/Documents/mas1004-assignment1/data/new_images)
+------------------------------------------------------------------------------------------
+  chiikawa_character              54 images
+  hachiware_character              5 images
+  usagi_character                 27 images
+  warning  the biggest class has 54 images and the smallest has 5. A model can score well just by always guessing the big class.
+
+The same image appearing twice
+------------------------------
+  ok       no file appears twice byte for byte. Near copies (the same picture resized or re-saved) are only found by `python src/clean.py suspects` and `python src/clean.py overlap`.
+
+The model you exported for the web page
+---------------------------------------
+  ok       3 classes: chiikawa_character, hachiware_character, usagi_character
+  ok       model.onnx is 44.8 MB, 11,178,051 parameters
+           input [1, 3, 224, 224], prepared as: shorter side 256, centre 224 x 224, mean [0.485, 0.456, 0.406], std [0.229, 0.224, 0.225]
+
+Does the exported model give the answers Python gave?
+-----------------------------------------------------
+  ok       yes, they agree (largest gap 0.0000)
+
+Your images from a new source  (/Users/demo/Documents/mas1004-assignment1/data/new_images)
+------------------------------------------------------------------------------------------
+
+  accuracy on your new images: 78/86 = 90.7%
+
+  rows are what it really is, columns are what the model said
+                          chiikawa hachiwar usagi_ch
+    chiikawa_character          51        1        2
+    hachiware_character          0        4        1
+    usagi_character              4        0       23
+
+  the mistakes it was most sure about:
+    이미지 3.jpg                 said chiikawa_character (92%), really usagi_character
+    images-2.jpeg                said hachiware_character (88%), really chiikawa_character
+    이미지 33 2.jpg              said chiikawa_character (65%), really usagi_character
+    이미지 29 2.jpg              said chiikawa_character (57%), really usagi_character
+    이미지 8.jpg                 said chiikawa_character (54%), really usagi_character
+
+Your saved runs on your new images  (/Users/demo/Documents/mas1004-assignment1/data/new_images)
+-----------------------------------------------------------------------------------------------
+  run               test accuracy   new images
+  run                       83.3%        70.9%   (61/86)
+  clean                     97.1%        73.3%   (63/86)
+
+Summary
+-------
+  nothing is broken
+  1 thing(s) worth a sentence in your report:
+    - the biggest class has 54 images and the smallest has 5. A model can score well just by always guessing the big class.
+

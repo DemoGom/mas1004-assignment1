@@ -1,0 +1,30 @@
+reading /Users/demo/Documents/mas1004-assignment1/data/clean
+450 images, 3 classes, read in 3 s
+  chiikawa_character       150
+  hachiware_character      150
+  usagi_character          150
+training on 360, testing on 90
+model has 11,178,051 parameters, 1,539 of them will be trained
+epoch   1/10  train loss 1.1073  acc 0.4139  test loss 0.9554  acc 0.5778
+epoch   2/10  train loss 0.8758  acc 0.6417  test loss 0.8098  acc 0.6333
+epoch   3/10  train loss 0.7845  acc 0.6611  test loss 0.7437  acc 0.7222
+epoch   4/10  train loss 0.6877  acc 0.7389  test loss 0.6851  acc 0.7333
+epoch   5/10  train loss 0.6576  acc 0.7472  test loss 0.6604  acc 0.7778
+epoch   6/10  train loss 0.6185  acc 0.7583  test loss 0.6714  acc 0.7111
+epoch   7/10  train loss 0.5839  acc 0.7694  test loss 0.6293  acc 0.7444
+epoch   8/10  train loss 0.5775  acc 0.7750  test loss 0.6398  acc 0.7333
+epoch   9/10  train loss 0.5330  acc 0.8139  test loss 0.6119  acc 0.7333
+epoch  10/10  train loss 0.5391  acc 0.7944  test loss 0.6122  acc 0.7444
+
+trained in 0.8 minutes
+train accuracy 85.8%
+test  accuracy 74.4%
+wrote /Users/demo/Documents/mas1004-assignment1/results/frozen_curves.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/frozen_confusion.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/frozen_worst.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/frozen_model.pt
+
+One line for your experiment table:
+| frozen | ImageNet | last layer | 10 | 0.001 | 1,539 | 85.8% | 74.4% |
+
+To put this model on your web page: python src/export_web.py --tag frozen

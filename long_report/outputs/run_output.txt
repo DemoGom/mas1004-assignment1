@@ -1,0 +1,30 @@
+reading /Users/demo/Documents/mas1004-assignment1/data/clean
+450 images, 3 classes, read in 3 s
+  chiikawa_character       150
+  hachiware_character      150
+  usagi_character          150
+training on 360, testing on 90
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch   1/10  train loss 0.8180  acc 0.6361  test loss 0.6056  acc 0.7444
+epoch   2/10  train loss 0.2824  acc 0.9028  test loss 0.5062  acc 0.8222
+epoch   3/10  train loss 0.1666  acc 0.9361  test loss 0.5774  acc 0.8222
+epoch   4/10  train loss 0.1458  acc 0.9389  test loss 0.6050  acc 0.8222
+epoch   5/10  train loss 0.1378  acc 0.9444  test loss 0.6258  acc 0.8111
+epoch   6/10  train loss 0.1275  acc 0.9444  test loss 0.6940  acc 0.8333
+epoch   7/10  train loss 0.1261  acc 0.9417  test loss 0.6997  acc 0.8000
+epoch   8/10  train loss 0.1198  acc 0.9500  test loss 0.7228  acc 0.8222
+epoch   9/10  train loss 0.1144  acc 0.9500  test loss 0.7286  acc 0.7889
+epoch  10/10  train loss 0.1093  acc 0.9472  test loss 0.7474  acc 0.8333
+
+trained in 2.0 minutes
+train accuracy 96.1%
+test  accuracy 83.3%
+wrote /Users/demo/Documents/mas1004-assignment1/results/run_curves.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/run_confusion.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/run_worst.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/run_model.pt
+
+One line for your experiment table:
+| run | ImageNet | all layers | 10 | 0.0001 | 11,178,051 | 96.1% | 83.3% |
+
+To put this model on your web page: python src/export_web.py --tag run

@@ -1,0 +1,30 @@
+reading /Users/demo/Documents/mas1004-assignment1/data/clean
+179 images, 3 classes, read in 1 s
+  chiikawa_character       16
+  hachiware_character      112
+  usagi_character          51
+training on 144, testing on 35
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch   1/10  train loss 0.9837  acc 0.5069  test loss 0.6113  acc 0.8571
+epoch   2/10  train loss 0.2240  acc 0.9861  test loss 0.2688  acc 0.9429
+epoch   3/10  train loss 0.0517  acc 1.0000  test loss 0.1542  acc 0.9714
+epoch   4/10  train loss 0.0191  acc 1.0000  test loss 0.1218  acc 0.9714
+epoch   5/10  train loss 0.0120  acc 1.0000  test loss 0.1070  acc 0.9714
+epoch   6/10  train loss 0.0105  acc 1.0000  test loss 0.1018  acc 0.9714
+epoch   7/10  train loss 0.0087  acc 1.0000  test loss 0.1010  acc 0.9714
+epoch   8/10  train loss 0.0094  acc 1.0000  test loss 0.1002  acc 0.9714
+epoch   9/10  train loss 0.0049  acc 1.0000  test loss 0.1004  acc 0.9714
+epoch  10/10  train loss 0.0048  acc 1.0000  test loss 0.0982  acc 0.9714
+
+trained in 0.8 minutes
+train accuracy 100.0%
+test  accuracy 97.1%
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean_curves.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean_confusion.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean_worst.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean_model.pt
+
+One line for your experiment table:
+| clean | ImageNet | all layers | 10 | 0.0001 | 11,178,051 | 100.0% | 97.1% |
+
+To put this model on your web page: python src/export_web.py --tag clean

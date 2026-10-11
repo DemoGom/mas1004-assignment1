@@ -1,0 +1,40 @@
+reading /Users/demo/Documents/mas1004-assignment1/data/clean
+450 images, 3 classes, read in 3 s
+  chiikawa_character       150
+  hachiware_character      150
+  usagi_character          150
+training on 360, testing on 90
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch   1/20  train loss 0.8084  acc 0.6167  test loss 0.5463  acc 0.7889
+epoch   2/20  train loss 0.2972  acc 0.9111  test loss 0.5297  acc 0.8222
+epoch   3/20  train loss 0.1933  acc 0.9361  test loss 0.6165  acc 0.8333
+epoch   4/20  train loss 0.1549  acc 0.9389  test loss 0.6793  acc 0.8444
+epoch   5/20  train loss 0.1139  acc 0.9389  test loss 0.7011  acc 0.8222
+epoch   6/20  train loss 0.1331  acc 0.9417  test loss 0.6930  acc 0.8444
+epoch   7/20  train loss 0.0951  acc 0.9500  test loss 0.8289  acc 0.8333
+epoch   8/20  train loss 0.1227  acc 0.9444  test loss 0.8309  acc 0.8444
+epoch   9/20  train loss 0.1089  acc 0.9361  test loss 0.7779  acc 0.8333
+epoch  10/20  train loss 0.1184  acc 0.9472  test loss 0.7360  acc 0.8333
+epoch  11/20  train loss 0.1107  acc 0.9500  test loss 0.6793  acc 0.8444
+epoch  12/20  train loss 0.0920  acc 0.9417  test loss 0.6922  acc 0.8444
+epoch  13/20  train loss 0.0935  acc 0.9472  test loss 0.7174  acc 0.8444
+epoch  14/20  train loss 0.0862  acc 0.9389  test loss 0.7567  acc 0.8444
+epoch  15/20  train loss 0.1102  acc 0.9333  test loss 0.8152  acc 0.8333
+epoch  16/20  train loss 0.0933  acc 0.9417  test loss 0.7837  acc 0.8222
+epoch  17/20  train loss 0.0851  acc 0.9528  test loss 0.8130  acc 0.8333
+epoch  18/20  train loss 0.0914  acc 0.9472  test loss 0.8301  acc 0.8111
+epoch  19/20  train loss 0.1011  acc 0.9444  test loss 0.8368  acc 0.8333
+epoch  20/20  train loss 0.0922  acc 0.9444  test loss 0.8753  acc 0.8444
+
+trained in 3.9 minutes
+train accuracy 95.6%
+test  accuracy 84.4%
+wrote /Users/demo/Documents/mas1004-assignment1/results/long_curves.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/long_confusion.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/long_worst.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/long_model.pt
+
+One line for your experiment table:
+| long | ImageNet | all layers | 20 | 0.0001 | 11,178,051 | 95.6% | 84.4% |
+
+To put this model on your web page: python src/export_web.py --tag long

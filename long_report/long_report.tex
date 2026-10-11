@@ -27,23 +27,43 @@
 \section*{Problem 1. Categories and images}
 
 \subsection*{Why these categories}
-\fillin{Why these categories, and why you care about them.}
+I had just seen the new Chiikawa film, so I wanted to work with the characters
+of that comic rather than with cups or flowers. I collected photographs of the
+plush toys and goods of three of its characters instead of much wider
+categories, because the three look alike and I wanted to see whether the model
+can tell them apart at all, and what it uses when it does.
 
 \subsection*{What I expected the model to use}
-\fillin{What you thought, before training, the model would use to tell them
-apart: shape, colour, texture, background, or something else.}
+Before training I expected it to use the whole outline: the shape of the eyes
+and the eyebrows, the ears, the tail, and the colour the character is known by.
+I did not expect the background to matter, and I expected Hachiware and Usagi,
+the two with colour on them, to be easier than Chiikawa, which is plain white.
 
 \subsection*{Images per category}
-\fillin{How many images you got for each category.}
+150 images for each of the three categories, 450 in all, as downloaded; the
+counts are in the first lines of \texttt{results/run\_output.txt}. After
+cleaning, \texttt{data/clean} holds 104 chiikawa, 110 hachiware and 99 usagi
+images (\texttt{check.py}, and the table in Problem 4).
 
 % ---------------------------------------------------------------------------
 \section*{Problem 2. Preparing an image}
 
-\sidebyside{figures/prepare_original.jpg}{\fillin{the image as downloaded}}
-           {figures/prepare_result.png}{\fillin{what prepare\_image made of it}}
+\sidebyside{figures/prepare_original.jpg}{hachiware\_character/0093.jpg as
+downloaded: 1080x1920 on screen, resized to 256x455 here, with a red box around
+the 224x224 that \texttt{prepare\_image} keeps}
+           {figures/prepare_result.png}{what \texttt{prepare\_image} made of it:
+224x224, the only thing the model ever sees}
 
-\fillin{What was cut off, and an image where the crop cut off part of the
-thing you care about.}
+\texttt{prepare\_image} resizes the shorter side to 256 and then keeps only the
+middle 224x224 square, so on a tall picture it throws the top and the bottom
+away. In hachiware\_character/0093.jpg the bow and the top of the head are
+inside the square and everything below them is gone: the eyes, the mouth and the
+pink cheeks, which are the only things that tell Hachiware from Chiikawa, never
+reach the model. Every 224x224 value is then divided by 255 and shifted by the
+ImageNet mean and standard deviation, channel by channel, with the channels
+first, so the model reads the picture exactly the way it read the million
+ImageNet photographs. This image is still in \texttt{data/clean}: the model
+trains on a bow.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 3. First training runs}
@@ -53,84 +73,271 @@ thing you care about.}
 \toprule
 tag & start & trained & epochs & lr & trainable parameters & train acc. & test acc. \\
 \midrule
-\multicolumn{8}{l}{\fillin{one row per run, as run.py printed it}} \\
+run     & ImageNet & all layers & 10 & 0.0001 & 11,178,051 & 96.1\% & 83.3\% \\
+scratch & random   & all layers & 10 & 0.0001 & 11,178,051 & 95.8\% & 66.7\% \\
+frozen  & ImageNet & last layer & 10 & 0.001  & 1,539      & 85.8\% & 74.4\% \\
+long    & ImageNet & all layers & 20 & 0.0001 & 11,178,051 & 95.6\% & 84.4\% \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \picturefile{figures/run_curves.png}
 
-\fillin{Did the loss go down? Did it keep going down, or flatten out?}
+\sidebyside{figures/scratch_curves.png}{scratch: random weights, 10 epochs, the
+same pictures and the same code as run}
+           {figures/frozen_curves.png}{frozen: only the last layer is trained,
+with the larger learning rate}
 
-\fillin{The gap between train and test accuracy, and what it means.}
+\picturefile[0.6\linewidth]{figures/long_curves.png}
+
+With 20 epochs instead of 10, the test accuracy moves from 83.3\% to 84.4\%.
+
+The train loss went down, from 0.818 at epoch 1 to 0.109 at epoch 10, and it was
+almost flat after epoch 4 (0.146 at epoch 4, 0.109 at epoch 10). The test loss
+did the opposite. It fell to its lowest 0.506 at epoch 2 and then went up at
+every single epoch after that, to 0.747 at epoch 10. So the model kept getting
+better on the 360 pictures it was trained on and worse on the 90 it had not
+seen, which is what overfitting looks like.
+
+Train 96.1\% against test 83.3\% is a gap of 12.8 points, and the other runs
+show the same shape (long 95.6\% / 84.4\%, frozen 85.8\% / 74.4\%). With only
+360 training images of one toy line, the model can partly remember the pictures
+instead of learning the characters. The test images come from the same search
+and are the same kind of product photo as the training ones, so 83.3\% is an
+optimistic number: on pictures from another source the same model gets 70.9\%
+(Problem 4).
 
 \begin{center}\picturefile[0.5\linewidth]{figures/run_confusion.png}\end{center}
 
-\fillin{Which two categories it mixes up most, and whether that surprised you.}
+It mixes up Chiikawa and Hachiware most: 5 Chiikawa pictures were called
+Hachiware and 2 Hachiware pictures were called Chiikawa, 7 of the 15 mistakes.
+Chiikawa and Usagi come next (2 + 4 = 6), and Hachiware and Usagi are almost
+never confused with each other (2). Chiikawa being in both pairs does not
+surprise me: it is the plain one, a round white body with no ears and no colour
+of its own, so both of the coloured characters can look like it. What did
+surprise me is that the mistakes are not spread evenly: 58 of the 90 test
+pictures sit on the diagonal, and the rest are all rumours of Chiikawa.
 
-\fillin{How far apart the test accuracies are, starting from ImageNet and from
-random numbers, and why you think that is.}
+Same images, same code, same 10 epochs, and the two test accuracies are 83.3\%
+with the ImageNet weights and 66.7\% from random numbers: 16.6 points apart.
+The ImageNet weights have already seen a million photographs, so edges, fabric,
+fur and round shapes are there before training starts; starting from random
+numbers, everything has to be learned from the 360 images we have, and 10
+epochs is not enough for that. The 16.6 points are the price of not borrowing
+someone else's 1.2 million pictures.
 
-\fillin{How close training only the last layer gets to training all of them.}
+Training only the last layer reaches 74.4\% against 83.3\% for all layers, 8.9
+points behind, while it changes 1,539 of the 11,178,051 parameters, about
+0.01\% of them. For a three-class problem the last layer is most of the
+decision, and the layers below only have to move a little; the 8.9 points are
+what tuning the layers below is worth here. My own setting, 20 epochs at the
+same learning rate, reached 84.4\%, only 1.1 points more for twice the time.
 
 \subsection*{Output of the runs}
 \outputfile{outputs/run_output.txt}
 \outputfile{outputs/scratch_output.txt}
 \outputfile{outputs/frozen_output.txt}
 % One more line like these for the setting you chose, named by its tag.
-\fillin{the output of the run with your own setting}
+\outputfile{outputs/long_output.txt}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 4. Cleaning}
 
 \subsection*{My rule}
-\fillin{Your rule, in one or two sentences, as you wrote it before you
-started.}
+An image stays only if the main thing in it is exactly one of the three
+characters, clearly, and nothing else of the story is in the frame. It goes if
+the character is not the one the folder says, if it is a person or a drawing
+that does not look like the character at all, or if two or more characters share
+the picture.
+
+\picturefile[0.9\linewidth]{figures/look_chiikawa_1.jpg}
+
+\texttt{clean.py look} drew all 450 downloaded images onto 12 sheets, so that
+every picture could be looked at; this is the first of the four chiikawa sheets.
+I wrote the rule before starting and decided every image by the rule, not by
+what looked wrong.
 
 \subsection*{Three kinds of junk}
-\fillin{Three kinds of junk, with one picture of each.}
+\sidebyside{figures/junk_1.jpg}{the folder says Chiikawa and the picture is
+Usagi, drawn on a yellow background: the wrong character}
+           {figures/junk_2.jpg}{not a character at all: a person, drawn, and the
+watermark of the tool that drew her}
 
-% For example: \picturefile[0.3\linewidth]{figures/junk_1.jpg}
+\picturefile[0.45\linewidth]{figures/junk_3.jpg}
+
+The third kind: a shelf of goods with several characters in one frame. Whoever
+made it meant the shelf, not one character.
 
 \subsection*{What I removed}
 \outputfile{outputs/clean_count.txt}
 
-\fillin{How many near copies it found, and what you did with them.}
+That table counts only the files I moved with \texttt{clean.py remove}, because
+the log of the batch removal that followed was written with its columns in a
+different order and \texttt{clean.py count} cannot read those rows: they are
+counted in the \texttt{other} column. \texttt{data/removed/} holds 271 files in
+all: 134 chiikawa, 38 hachiware and 99 usagi.
 
-\fillin{Of the first 20 suspects in each class, how many you removed. Whether
-the suspects included junk you had missed, and whether you found junk it did
-not list.}
+\picturefile[0.9\linewidth]{figures/suspect_copies.jpg}
+
+\texttt{clean.py suspects} ran on the 450 images of 8 October, before I cleaned
+anything, and reported 133 pairs of pictures closer to each other than 0.95:
+that number is the title of \texttt{copies.png}, and it is the number of
+\texttt{copy of} rows in \texttt{suspects.csv}. 56 of the pairs, counted from
+the same rows, are two different classes, that is the same picture filed under
+two characters, which cannot both be right. Counting those 133 rows against what
+is in \texttt{data/clean} today, 87 pairs have neither file left, 19 pairs have
+one file left and 27 pairs still have both, and those 27 are the ones to worry
+about: the split into training and test is random, so one of a near-copy pair
+can be in the training set while its partner is in the test set. That is one
+reason the test accuracy of the cleaned model reads 100\%, and it is not a
+reason to believe it. I never ran \texttt{clean.py suspects} again after adding
+the 138 extra images, so the newest pictures in \texttt{data/clean} have not
+been checked for near copies at all.
+
+Of the first 20 suspects of each class, the 20 images each class agrees with its
+own label least, I removed 19 of 20 for chiikawa, 14 of 20 for hachiware and 13
+of 20 for usagi: 46 of 60. Looking at the sheets, the suspects did find junk I
+had missed when I looked myself: wrong characters, fan drawings and pictures
+with two characters in them were exactly what sat at the bottom of each class,
+with their own label at 4.4\%, 5.5\% and 7.0\% probability on average. The
+other way round also happened: 14 of those 60 are pictures I wanted to keep,
+like a plush photographed against a busy shop shelf, which is a legitimate
+picture of the character that simply does not look like the rest of the class.
+
+\sidebyside{figures/suspects_chiikawa.jpg}{the 32 chiikawa pictures that look
+least like the rest of chiikawa (rank 1 at the top left); 19 of the first 20
+went}
+           {figures/suspects_usagi.jpg}{the same for usagi: 13 of the first 20
+are gone}
 
 \subsection*{Before and after cleaning}
 \outputfile{outputs/compare.txt}
+\outputfile{outputs/clean_output.txt}
+\outputfile{outputs/clean3_output.txt}
 
-\fillin{The test accuracy and the accuracy on your new images, before and
-after. If a number went down, why you think it did.}
+The bottom rows of \texttt{compare.txt} are the fair comparison, because the
+new images are the only ones cleaning did not touch: the model trained before
+cleaning gets 70.9\% on them (61 of 86) and the one trained after gets 73.3\%
+(63 of 86), so cleaning was worth 2.4 points on pictures from another source.
+On the downloaded test set the same rows read 83.3\% and 97.1\%, but that set
+is not the same set of pictures before and after: cleaning changed it and made
+it much smaller (90 images before, 35 after), so those two numbers cannot be
+compared directly.
+
+Two things about \texttt{compare.txt} that are not what they look like. The
+counts of training images at the top, 104/110/99, are \texttt{data/clean} today,
+not the folder the run tagged \texttt{clean} was trained on: that run read 179
+images, 16 chiikawa, 112 hachiware and 51 usagi, as the first lines of
+\texttt{clean\_output.txt} show, because at that moment most of the downloaded
+chiikawa and usagi pictures had just been removed as junk. And \texttt{data/clean}
+today holds 138 images that are not in \texttt{data/raw} (88 chiikawa, 50
+usagi), added afterwards so that the two small classes would have enough
+pictures to learn from; the table in Problem 4 counts the downloaded ones only.
+
+I trained after cleaning three times, as the folder grew: \texttt{clean} on 179
+images (16 chiikawa, 112 hachiware, 51 usagi), \texttt{clean2} on 208 (38, 112,
+58) once more chiikawa pictures were in, and \texttt{clean3} on 315 (104, 112,
+99). The runs are printed below, and only \texttt{clean3} is the one exported
+for the web page.
+
+\outputfile{outputs/clean2_output.txt}
+
+The model I publish is the run tagged \texttt{clean3}: 315 images, 104 chiikawa,
+112 hachiware, 99 usagi, 100.0\% train and 100.0\% test accuracy. The 100\% is
+not believable and I do not believe it. The test set comes from the same search
+as the training set, some near copies are in both halves of the split, and 315
+images are few. \texttt{check.py} measures the same model on the new images and
+gets 78 of 86, 90.7\%; that is the number I trust, and it is still optimistic
+for the reason just given.
+
+\sidebyside{figures/clean3_curves.png}{clean3: the model published on the web
+page}
+           {figures/clean3_confusion.png}{its confusion matrix on the downloaded
+test set, everything on the diagonal}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 5. Images from a new source}
 
-\fillin{Where your new images came from, and why you are sure none of them are
-among your downloads.}
+My new images are photographs of goods my friends own. I asked them to
+photograph their own plushes, figures and keyrings and send me the pictures, so
+every one of them was made by a camera rather than found by the search that
+filled \texttt{data/raw}: the search returned shop shots and drawings, and these
+are ordinary phone pictures of toys. That is also why they cannot be among the
+downloads: the model never searched, and a picture nobody uploaded to a shop is
+not in a search result. \texttt{clean.py overlap} agrees: none of the 86 new
+images is a near copy of any of the 571 downloaded ones, and the closest pair
+is 0.95, below the 0.95 line that command uses.
 
 \outputfile{outputs/overlap.txt}
 
-\fillin{The accuracy on your downloaded test set and on your new images, side
-by side.}
+\textbf{On the downloaded test set} the model I publish scores 100.0\% (315
+images, the first lines of \texttt{clean3\_output.txt}); \textbf{on the new
+images} it scores 78 of 86, 90.7\%. The nine points between them are the most
+useful number in this report: the first one is measured on pictures that came
+out of the same search as the training pictures, the second one on pictures that
+did not.
 
-\fillin{Five mistakes it was confident about, with the pictures. For each one,
-what in the image you think pushed it the wrong way.}
+\subsection*{Five mistakes it was confident about}
 
-\fillin{What is different about your new images: background, lighting, angle,
-distance, what else is in the frame.}
+\picturefile[0.35\linewidth]{figures/mistake_1.jpg}\\
+usagi\_character/이미지 3.jpg, said Chiikawa (92\%). A plush held
+up in my hand, in a shop. From this angle nothing in the picture says Usagi: the
+long ears that make Usagi Usagi are not in the frame, and what is left is a
+round cream face with pink cheeks and a small mouth, which is what 104 Chiikawa
+pictures in the training set look like.
+
+\picturefile[0.25\linewidth]{figures/mistake_2.jpg}\\
+chiikawa\_character/images-2.jpeg, said Hachiware (88\%). A Chiikawa drawing
+printed very small in the middle of a large pink card. The card is nearly
+square, so \texttt{prepare\_image} keeps almost all of it, and almost all of it
+is flat pink: the character is a handful of thin lines low in the frame. There
+was nothing in the 224x224 picture for the model to recognise.
+
+\picturefile[0.3\linewidth]{figures/mistake_3.jpg}\\
+usagi\_character/이미지 33 2.jpg, said Chiikawa (65\%). A plush
+lying on dark clothing, photographed from above. The ears are out of the frame
+or folded back, the background is a dark, high-contrast surface that has nothing
+to do with any training picture, and the object itself is a plain cream face
+with pink cheeks.
+
+\picturefile[0.3\linewidth]{figures/mistake_4.jpg}\\
+usagi\_character/이미지 29 2.jpg, said Chiikawa (57\%). A shop
+pegboard: several plushes, price tags and boxes, and the Usagi is a small part
+of the frame. This is the picture that is unlike the training set in the most
+ways at once: a third object in a tool that only looks at the middle of the
+frame, a real background, and one character among many.
+
+\picturefile[0.3\linewidth]{figures/mistake_5.jpg}\\
+usagi\_character/이미지 8.jpg, said Chiikawa (54\%). A close-up of
+a plush against a rainy window, taken into the light. The object is large in the
+frame, so this is not a distance problem; the light is grey, the plush is almost
+colourless, and the round face with pink cheeks is all that is left to see.
+
+Four of the five mistakes are Usagi called Chiikawa, and each one of them hides
+the ears, which is the difference between the two characters. The fifth is a
+Chiikawa seen so small that the crop threw it away. Both kinds say the same
+thing: the model needs the character centred, large and with its ears.
+
+\subsection*{What is different about my new images}
+Every one of them is a photograph of a three-dimensional object: plushes,
+figures, keyrings, taken with a phone from many angles, close up, from above,
+held in a hand, indoors and outdoors, on desks, on beds, on clothes and in
+shops. My downloads are mostly flat drawings and product shots: the object
+centred, one colour or white behind it, even light, no hand, no shop, no
+weather. The new pictures have real backgrounds, uneven light, and the object
+anywhere in the frame, and they show a different line of merchandise than the
+drawings do.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 6. The demo}
 
-Address: \fillin{your GitHub Pages address}
+Address: \url{https://demogom.github.io/mas1004-assignment1/}
 
-\fillin{What happens when you show it something that is none of your
-categories.}
+I showed the page things that are none of my three categories. With my own face
+filling the frame it answered Usagi, and with my upper body in the picture
+instead, blue clothes included, it answered Hachiware. It never answers
+``not a character'', because the page can only choose between the three classes:
+whatever you put in front of it comes out as the class it is least unlike.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 7. What the model looks at}
@@ -138,25 +345,124 @@ categories.}
 % Copy this subsection once for every guess.
 \subsection*{Guess 1}
 
-\fillin{The guess, and what in your images or your model's mistakes made you
-think of it.}
+I think the model goes mostly by colour. When I showed the web page things that
+are not one of the three characters at all, it answered Usagi for my own face,
+and Hachiware as soon as my blue clothes were in the picture; anything yellow in
+front of the camera came out as Usagi, and most other colours came out as
+Hachiware. The three characters are told apart by colour in the drawings, too:
+Usagi is yellow, Hachiware is white and blue, Chiikawa is plain white. The
+mistakes point the same way, but weakly: four of the five confident mistakes in
+Problem 5 are Usagi called Chiikawa, and in those pictures the yellow that says
+Usagi is either missing from the object or hidden by the dark background and the
+grey light.
 
-\fillin{The change you chose, and why it tests the guess.}
+The change I chose is to take the colour away: grayscale copies of the pictures,
+with the originals untouched, so nothing else about them changes. If the model
+is really reading colour, greys should cost it a lot of accuracy; if it is
+reading shape, the same pictures in grey should come out almost the same. I
+asked the agent to make the grayscale copies of 10 images per class and to tell
+me the model's answers, so that the loss, if there is one, can be counted rather
+than guessed.
 
 My request to the agent, word for word:
-\begin{quote}
-\fillin{the request}
+\begin{quote}\small
+chiikawa\_character: 0021,0029,0036,0095,3045a4591f30816d69459cf632a95fc0,0119,이미지 16 2,이미지 46,c0348d114447ffc95d74bcd4ee2e4a89,e20ee5bd663fe3c2dc4df83a13d56a7b\\
+hachiware\_character: 0014,0033,0030,0047,0064,0079,0096,0120,0149,0128\\
+usagi\_character: 이미지 35, 이미지 36, 이미지 33, 0020,0023,0076,0092,bbea743755f3374e8676735886c155c8, 이미지4, 이미지23\\[0.4em]
+이렇게 10장을 흑백으로 해주세요 실수 5장은 그대로 두세요
 \end{quote}
 
-% One \sidebyside for every image you changed.
-\sidebyside{figures/guess1_original_1.jpg}{\fillin{original: the model's answer}}
-           {figures/guess1_changed_1.jpg}{\fillin{changed: the model's answer}}
+The change: ten pictures in each class, thirty in all, copied out of
+\texttt{data/clean} into \texttt{data/changed} and turned grey there, so the
+originals are untouched and the only thing that differs inside a pair is the
+colour. The five confident mistakes of Problem 5 are not among the thirty: they
+are in \texttt{data/new\_images}, and they are the pictures my guess was built
+on, so changing them would have tested nothing new. The answers were worked out
+by \texttt{src/changed\_answers.py}, which loads the same \texttt{docs/model.onnx}
+the web page loads, so the sheets below, the table below them and the page all
+speak from one model.
 
-\fillin{What the results say about the guess.}
+Each sheet holds ten pairs, one per line: on the left the original picture, on
+the right the grey copy, and under each of them the model's answer and its
+probability.
+
+\textbf{The ten chiikawa pictures.}
+\picturefile[0.8\linewidth]{figures/grey_chiikawa_character_sheet.png}
+
+\textbf{The ten hachiware pictures.}
+\picturefile[0.8\linewidth]{figures/grey_hachiware_character_sheet.png}
+
+\textbf{The ten usagi pictures.}
+\picturefile[0.8\linewidth]{figures/grey_usagi_character_sheet.png}
+
+Read off the table: 30 of 30 right before the change, 100.0\%, and 27 of 30
+after it, 90.0\%. Per class, chiikawa 10 and 10, hachiware 10 and 9, usagi 10
+and 8, and all three answers that moved moved to Chiikawa. Looking down the
+probabilities, the two coloured classes lose confidence when the colour goes -
+in 19 of the 20 hachiware and usagi rows the after column is lower, by 1 to 21
+points - while the ten chiikawa rows do not move at all: eight of them read
+100\% in both columns, one goes 99\% to 98\%, and one goes up, from 94\% to
+100\%.
+
+\outputfile{outputs/changed_answers.txt}
+
+The three answers that moved, the original next to its grey copy:
+
+\sidebyside{figures/grey_18_original.jpg}{hachiware\_character/0120.jpg, original:
+Hachiware (90\%)}
+           {figures/grey_18_grey.jpg}{the same picture in grey: Chiikawa (69\%)}
+
+\sidebyside{figures/grey_26_original.jpg}{usagi\_character/이미지 23.jpg, original:
+Usagi (92\%)}
+           {figures/grey_26_grey.jpg}{the same picture in grey: Chiikawa (88\%)}
+
+\sidebyside{figures/grey_30_original.jpg}{usagi\_character/이미지 4.jpg, original:
+Usagi (100\%)}
+           {figures/grey_30_grey.jpg}{the same picture in grey: Chiikawa (97\%)}
+
+\textbf{What the results say.} The guess was that the model goes mostly by
+colour, and the test was to take the colour away. Taking it away cost three
+answers in thirty; the model still tells 27 of the 30 apart with no colour at
+all. My guess expected much more than that, so it is only partly right, and the
+way it is wrong is more useful than the number. All three losses go the same
+way, towards Chiikawa, the plain white character, and all three are pictures
+where colour was already doing very little: 0120 is a drawing whose blue hair,
+blue bow and blue sky become one grey in the copy, and 이미지 23 and 이미지 4 are
+photographs of pale cream plushes, one held in a hand over a wooden floor and
+one lying on a knitted mat with black lace behind it, where there is hardly any
+yellow to lose in the first place. The part of the guess that survived is the
+direction of the errors: colour decides for the two coloured classes and does
+nothing for Chiikawa. That is the same direction as the confusion matrix in
+Problem 3 and the same direction as the five mistakes in Problem 5, where four
+of the five are coloured characters called Chiikawa. The model uses the colour
+of the character as a hint, but the hint is not what keeps it right on 90\% of
+pictures that have no colour left.
 
 \subsection*{What I now think the model uses}
-\fillin{What you now think the model uses to tell your categories apart, and
-how sure you are.}
+
+I now think the model goes by the shape it can see in the middle of the frame,
+and above all by the ears, with the character's own colour as a weaker second
+signal that usually agrees with the shape and settles the pictures where the
+shape is hard to see. Four of the five confident mistakes in Problem 5 and all
+three answers that moved here are the same story: the long ears are out of the
+frame, folded back, or the whole character is a small part of a busy picture, and
+what is left is a round cream face with pink cheeks, which is exactly Chiikawa.
+The one mistake that goes the other way, a Chiikawa drawing printed so small
+that the crop throws it away, is the same story told from the other side: too
+little of the character in the 224x224 square to see anything. Colour is real
+but secondary, and the grey copies show how secondary: the ten Chiikawa rows
+hardly move at all, because that character has no colour to lose, while the
+coloured rows only lose confidence, not answers.
+
+How sure am I? Fairly sure about the ears, and sure that Chiikawa is the class
+everything falls back to, because in every mistake I have looked at Chiikawa is
+on one side or the other. Less sure about colour, for two reasons. Thirty
+pictures, ten for each class, is not many, and my change was blunt: it takes
+colour out of the character and the background at once, so it cannot say which of
+the two the model was reading. If I had another run, I would change the character
+only and leave the background alone, and for Usagi I would take the yellow off
+the character by itself, to see whether the confidence that fell in the grey rows
+was the yellow of the rabbit or the colour around it.
 
 % ---------------------------------------------------------------------------
 \section*{Appendix. Output of check.py}

@@ -1,0 +1,30 @@
+reading /Users/demo/Documents/mas1004-assignment1/data/clean
+208 images, 3 classes, read in 1 s
+  chiikawa_character       38
+  hachiware_character      112
+  usagi_character          58
+training on 168, testing on 40
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch   1/10  train loss 0.8073  acc 0.6607  test loss 0.3676  acc 0.9250
+epoch   2/10  train loss 0.0951  acc 1.0000  test loss 0.1357  acc 1.0000
+epoch   3/10  train loss 0.0408  acc 0.9940  test loss 0.0784  acc 1.0000
+epoch   4/10  train loss 0.0265  acc 1.0000  test loss 0.0594  acc 1.0000
+epoch   5/10  train loss 0.0080  acc 1.0000  test loss 0.0607  acc 0.9750
+epoch   6/10  train loss 0.0095  acc 1.0000  test loss 0.0581  acc 0.9750
+epoch   7/10  train loss 0.0078  acc 1.0000  test loss 0.0487  acc 0.9750
+epoch   8/10  train loss 0.0029  acc 1.0000  test loss 0.0532  acc 0.9750
+epoch   9/10  train loss 0.0088  acc 1.0000  test loss 0.0415  acc 0.9750
+epoch  10/10  train loss 0.0021  acc 1.0000  test loss 0.0331  acc 1.0000
+
+trained in 1.2 minutes
+train accuracy 100.0%
+test  accuracy 100.0%
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean2_curves.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean2_confusion.png
+no mistakes to plot, which is suspicious. Check your split.
+wrote /Users/demo/Documents/mas1004-assignment1/results/clean2_model.pt
+
+One line for your experiment table:
+| clean2 | ImageNet | all layers | 10 | 0.0001 | 11,178,051 | 100.0% | 100.0% |
+
+To put this model on your web page: python src/export_web.py --tag clean2

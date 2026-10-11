@@ -1,0 +1,30 @@
+reading /Users/demo/Documents/mas1004-assignment1/data/clean
+450 images, 3 classes, read in 3 s
+  chiikawa_character       150
+  hachiware_character      150
+  usagi_character          150
+training on 360, testing on 90
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch   1/10  train loss 0.9821  acc 0.5167  test loss 1.0652  acc 0.4556
+epoch   2/10  train loss 0.6872  acc 0.7444  test loss 0.9702  acc 0.5778
+epoch   3/10  train loss 0.4586  acc 0.8667  test loss 1.2010  acc 0.6111
+epoch   4/10  train loss 0.3301  acc 0.8972  test loss 0.8899  acc 0.6889
+epoch   5/10  train loss 0.2127  acc 0.9194  test loss 1.8152  acc 0.4778
+epoch   6/10  train loss 0.1762  acc 0.9306  test loss 1.3744  acc 0.6111
+epoch   7/10  train loss 0.1879  acc 0.9361  test loss 1.2301  acc 0.6889
+epoch   8/10  train loss 0.2105  acc 0.9333  test loss 1.3688  acc 0.7111
+epoch   9/10  train loss 0.1585  acc 0.9528  test loss 1.1652  acc 0.6000
+epoch  10/10  train loss 0.1510  acc 0.9500  test loss 1.1078  acc 0.6667
+
+trained in 1.9 minutes
+train accuracy 95.8%
+test  accuracy 66.7%
+wrote /Users/demo/Documents/mas1004-assignment1/results/scratch_curves.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/scratch_confusion.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/scratch_worst.png
+wrote /Users/demo/Documents/mas1004-assignment1/results/scratch_model.pt
+
+One line for your experiment table:
+| scratch | random | all layers | 10 | 0.0001 | 11,178,051 | 95.8% | 66.7% |
+
+To put this model on your web page: python src/export_web.py --tag scratch
