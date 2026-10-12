@@ -1,0 +1,75 @@
+chiikawa_character/0021.jpg   original 383x396
+  1x    fit: dark below 125 spread 2 px, 8 neighbours, mean error 1.18 of 255
+  1x    fit: dark below 130 spread 2 px, 8 neighbours, mean error 1.18 of 255
+  1x    fit: dark below 120 spread 2 px, 8 neighbours, mean error 1.18 of 255
+  1.5x  fit: dark below 130 spread 4 px, 8 neighbours, mean error 1.25 of 255
+  1.5x  fit: dark below 125 spread 4 px, 8 neighbours, mean error 1.25 of 255
+  1.5x  fit: dark below 120 spread 4 px, 8 neighbours, mean error 1.25 of 255
+  1.5x from the original, best      error 1.25
+  1.5x from the 1x copy, best       error 1.01
+  1.5x from the 1x copy, fit        dark below 120 spread 2 px
+  dark run length (pixels)           original      1x    1.5x
+    below 128                           80.75  124.12  135.26   (1.54x, 1.09x)
+    below 96                            77.01  123.35  135.21   (1.60x, 1.10x)
+    below 64                            72.84  121.63  134.58   (1.67x, 1.11x)
+
+usagi_character/이미지 23.jpg   original 735x588
+  1x    fit: dark below 40 spread 5 px, 8 neighbours, mean error 12.45 of 255
+  1x    fit: dark below 40 spread 4 px, 8 neighbours, mean error 12.50 of 255
+  1x    fit: dark below 45 spread 4 px, 8 neighbours, mean error 12.60 of 255
+  1.5x  fit: dark below 45 spread 5 px, 8 neighbours, mean error 15.44 of 255
+  1.5x  fit: dark below 40 spread 5 px, 8 neighbours, mean error 15.45 of 255
+  1.5x  fit: dark below 50 spread 5 px, 8 neighbours, mean error 15.54 of 255
+  1.5x from the original, best      error 15.44
+  1.5x from the 1x copy, best       error 7.45
+  1.5x from the 1x copy, fit        dark below 40 spread 1 px
+  dark run length (pixels)           original      1x    1.5x
+    below 128                          104.91  152.67  170.13   (1.46x, 1.11x)
+    below 96                            40.02   60.56   74.79   (1.51x, 1.24x)
+    below 64                            37.63   65.33   76.78   (1.74x, 1.18x)
+
+usagi_character/0092.jpg   original 400x400
+  1x    fit: dark below 120 spread 2 px, 8 neighbours, mean error 2.93 of 255
+  1x    fit: dark below 125 spread 2 px, 8 neighbours, mean error 2.94 of 255
+  1x    fit: dark below 115 spread 2 px, 8 neighbours, mean error 2.94 of 255
+  1.5x  fit: dark below 120 spread 4 px, 8 neighbours, mean error 3.03 of 255
+  1.5x  fit: dark below 125 spread 4 px, 8 neighbours, mean error 3.03 of 255
+  1.5x  fit: dark below 115 spread 4 px, 8 neighbours, mean error 3.04 of 255
+  1.5x from the original, best      error 3.03
+  1.5x from the 1x copy, best       error 2.65
+  1.5x from the 1x copy, fit        dark below 115 spread 2 px
+  dark run length (pixels)           original      1x    1.5x
+    below 128                           10.73   19.31   28.28   (1.80x, 1.46x)
+    below 96                            10.26   18.74   27.60   (1.83x, 1.47x)
+    below 64                             9.71   17.96   26.78   (1.85x, 1.49x)
+
+hachiware_character/0047.jpg   original 400x387
+  1x    fit: dark below 110 spread 2 px, 8 neighbours, mean error 6.52 of 255
+  1x    fit: dark below 115 spread 2 px, 8 neighbours, mean error 6.52 of 255
+  1x    fit: dark below 105 spread 2 px, 8 neighbours, mean error 6.52 of 255
+  1.5x  fit: dark below 115 spread 4 px, 8 neighbours, mean error 8.45 of 255
+  1.5x  fit: dark below 110 spread 4 px, 8 neighbours, mean error 8.45 of 255
+  1.5x  fit: dark below 105 spread 4 px, 8 neighbours, mean error 8.45 of 255
+  1.5x from the original, best      error 8.45
+  1.5x from the 1x copy, best       error 7.35
+  1.5x from the 1x copy, fit        dark below 110 spread 2 px
+  dark run length (pixels)           original      1x    1.5x
+    below 128                            9.64   18.59   30.40   (1.93x, 1.64x)
+    below 96                             8.78   17.49   28.83   (1.99x, 1.65x)
+    below 64                             7.66   16.09   26.86   (2.10x, 1.67x)
+
+chiikawa_character/이미지 46.jpg   original 736x572
+  1x    fit: dark below 105 spread 4 px, 8 neighbours, mean error 11.69 of 255
+  1x    fit: dark below 100 spread 4 px, 8 neighbours, mean error 11.69 of 255
+  1x    fit: dark below 110 spread 4 px, 8 neighbours, mean error 11.70 of 255
+  1.5x  fit: dark below 105 spread 5 px, 8 neighbours, mean error 12.81 of 255
+  1.5x  fit: dark below 100 spread 5 px, 8 neighbours, mean error 12.81 of 255
+  1.5x  fit: dark below 110 spread 5 px, 8 neighbours, mean error 12.81 of 255
+  1.5x from the original, best      error 12.81
+  1.5x from the 1x copy, best       error 5.96
+  1.5x from the 1x copy, fit        dark below 40 spread 2 px
+  dark run length (pixels)           original      1x    1.5x
+    below 128                           12.84   27.69   33.05   (2.16x, 1.19x)
+    below 96                            11.41   28.08   32.79   (2.46x, 1.17x)
+    below 64                             9.24   19.36   24.09   (2.09x, 1.24x)
+
