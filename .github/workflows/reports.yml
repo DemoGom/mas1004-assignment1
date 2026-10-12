@@ -52,6 +52,32 @@ jobs:
             grep -a -E "^!|Overfull|Underfull|LaTeX Warning|missing" "$log" | head -40 || true
           done
 
+      - name: Check the PDFs and render previews
+        if: always()
+        run: |
+          sudo apt-get install -y poppler-utils || true
+          echo "=== long_report.pdf ==="
+          pdfinfo long_report/long_report.pdf | head -20
+          echo "=== short_report.pdf ==="
+          pdfinfo short_report/short_report.pdf | head -20
+          echo "=== red notes left in the long report ==="
+          pdftotext long_report/long_report.pdf - | grep -n "missing picture" || echo "none: no missing picture"
+          pdftotext long_report/long_report.pdf - | grep -n "넘었습니다" || echo "none: no overflow note"
+          echo "=== red notes left in the short report ==="
+          pdftotext short_report/short_report.pdf - | grep -n "missing picture" || echo "none: no missing picture"
+          pdftotext short_report/short_report.pdf - | grep -n "넘었습니다" || echo "none: no overflow note"
+          mkdir -p preview
+          pdftoppm -png -r 55 long_report/long_report.pdf preview/long
+          pdftoppm -png -r 110 short_report/short_report.pdf preview/short
+          ls preview | wc -l
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pdf-preview
+          path: preview/
+          if-no-files-found: warn
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
