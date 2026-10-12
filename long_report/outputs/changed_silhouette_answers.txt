@@ -1,0 +1,67 @@
+The same pictures, before and after the change
+  original  data/clean
+  changed   data/changed_silhouette
+  model     docs/model.onnx, 3 classes
+
+  32 picture(s) appear in both folders
+
+    #  class                file                             original answer        changed answer        
+  --------------------------------------------------------------------------------------------------------
+    1  chiikawa_character   0103.jpg                         chiikawa_character (100%) hachiware_character (56%) MOVED
+    2  chiikawa_character   4081234ca72dcf4fa1cb7f483b1c63f4.jpg chiikawa_character (100%) hachiware_character (47%) MOVED
+    3  chiikawa_character   4b73d8ce4eae62514c510b843d465c3d.jpg chiikawa_character (100%) hachiware_character (60%) MOVED
+    4  chiikawa_character   84e314c530a64a7653bef46103e5b0a9.jpg chiikawa_character (100%) hachiware_character (74%) MOVED
+    5  chiikawa_character   d610cb64640f03892156f8a2aa2c2fc3.jpg chiikawa_character (100%) hachiware_character (72%) MOVED
+    6  chiikawa_character   이미지 2.jpg                     chiikawa_character (100%) hachiware_character (58%) MOVED
+    7  chiikawa_character   이미지 3.jpg                     chiikawa_character (100%) hachiware_character (73%) MOVED
+    8  chiikawa_character   이미지 44.jpg                    chiikawa_character (100%) chiikawa_character (91%) same
+    9  chiikawa_character   이미지 45.jpg                    chiikawa_character (100%) hachiware_character (81%) MOVED
+   10  chiikawa_character   이미지 5.jpg                     chiikawa_character (100%) hachiware_character (71%) MOVED
+   11  chiikawa_character   이미지 9.jpg                     chiikawa_character (100%) hachiware_character (67%) MOVED
+   12  hachiware_character  0001.jpg                         hachiware_character (100%) hachiware_character (84%) same
+   13  hachiware_character  0007.jpg                         hachiware_character (100%) hachiware_character (86%) same
+   14  hachiware_character  0015.jpg                         hachiware_character (100%) hachiware_character (97%) same
+   15  hachiware_character  0020.jpg                         hachiware_character (100%) hachiware_character (82%) same
+   16  hachiware_character  0039.jpg                         hachiware_character (100%) hachiware_character (83%) same
+   17  hachiware_character  0063.jpg                         hachiware_character (100%) hachiware_character (90%) same
+   18  hachiware_character  0097.jpg                         hachiware_character (100%) hachiware_character (83%) same
+   19  hachiware_character  0126.jpg                         hachiware_character (100%) hachiware_character (88%) same
+   20  hachiware_character  0143.jpg                         hachiware_character (100%) hachiware_character (77%) same
+   21  hachiware_character  0149.jpg                         hachiware_character (100%) hachiware_character (93%) same
+   22  usagi_character      0023.jpg                         usagi_character (100%) usagi_character (71%)  same
+   23  usagi_character      0046.jpg                         usagi_character (100%) usagi_character (72%)  same
+   24  usagi_character      0058.jpg                         usagi_character (100%) hachiware_character (42%) MOVED
+   25  usagi_character      0092.jpg                         usagi_character (100%) usagi_character (77%)  same
+   26  usagi_character      0a14644c2080583c2137a53b7d71746e.jpg usagi_character (100%) hachiware_character (59%) MOVED
+   27  usagi_character      bbea743755f3374e8676735886c155c8.jpg usagi_character (100%) usagi_character (67%)  same
+   28  usagi_character      ce454d673dc55c318245a4da1f95fdb3.jpg usagi_character (100%) usagi_character (58%)  same
+   29  usagi_character      ce5d642b6e5b7625f6b1c95d48369b8d.jpg usagi_character (100%) hachiware_character (59%) MOVED
+   30  usagi_character      이미지 31.jpg                    usagi_character (100%) hachiware_character (54%) MOVED
+   31  usagi_character      이미지 32.jpg                    usagi_character (100%) hachiware_character (51%) MOVED
+   32  usagi_character      이미지 36.jpg                    usagi_character (100%) usagi_character (66%)  same
+
+  accuracy on the originals: 32/32 = 100.0%
+  accuracy on the changed copies: 17/32 = 53.1%
+
+  per class
+  class                pictures  right before  right after  answers moved
+  chiikawa_character         11            11            1             10
+  hachiware_character        10            10           10              0
+  usagi_character            11            11            6              5
+
+  answers that moved (15 of 32)
+    chiikawa_character/0103.jpg: chiikawa_character (100%) -> hachiware_character (56%)
+    chiikawa_character/4081234ca72dcf4fa1cb7f483b1c63f4.jpg: chiikawa_character (100%) -> hachiware_character (47%)
+    chiikawa_character/4b73d8ce4eae62514c510b843d465c3d.jpg: chiikawa_character (100%) -> hachiware_character (60%)
+    chiikawa_character/84e314c530a64a7653bef46103e5b0a9.jpg: chiikawa_character (100%) -> hachiware_character (74%)
+    chiikawa_character/d610cb64640f03892156f8a2aa2c2fc3.jpg: chiikawa_character (100%) -> hachiware_character (72%)
+    chiikawa_character/이미지 2.jpg: chiikawa_character (100%) -> hachiware_character (58%)
+    chiikawa_character/이미지 3.jpg: chiikawa_character (100%) -> hachiware_character (73%)
+    chiikawa_character/이미지 45.jpg: chiikawa_character (100%) -> hachiware_character (81%)
+    chiikawa_character/이미지 5.jpg: chiikawa_character (100%) -> hachiware_character (71%)
+    chiikawa_character/이미지 9.jpg: chiikawa_character (100%) -> hachiware_character (67%)
+    usagi_character/0058.jpg: usagi_character (100%) -> hachiware_character (42%)
+    usagi_character/0a14644c2080583c2137a53b7d71746e.jpg: usagi_character (100%) -> hachiware_character (59%)
+    usagi_character/ce5d642b6e5b7625f6b1c95d48369b8d.jpg: usagi_character (100%) -> hachiware_character (59%)
+    usagi_character/이미지 31.jpg: usagi_character (100%) -> hachiware_character (54%)
+    usagi_character/이미지 32.jpg: usagi_character (100%) -> hachiware_character (51%)
