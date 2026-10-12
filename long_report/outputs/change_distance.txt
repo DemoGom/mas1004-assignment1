@@ -1,0 +1,70 @@
+how far a change moves a picture, in the numbers the model sees
+  originals from data/clean: 313 pictures, 252 in the training split
+  class means over the training split: chiikawa_character 84, hachiware_character 88, usagi_character 80
+
+section 'the changed pictures are grey (colour removed)': 30 pictures, 30 originals
+  moved from the original by  10.5 of 255 on average, pixels moved by more than 30:  26.4%, correlation 0.949
+  the two biggest changes: 0023.jpg 36.6, 이미지 36.jpg 23.6
+  the two smallest changes: 0021.jpg 0.4, 0064.jpg 0.5
+
+  distance to each class mean picture, smaller is closer
+                     chiikawa_cha hachiware_ch usagi_charac
+  before                    1.012        1.038        1.096
+  after                     0.978        1.001        1.082
+  mean distance to a picture's own class mean: before 1.018, after 1.009
+  closest class mean after the change: {'chiikawa_character': 20, 'usagi_character': 4, 'hachiware_character': 6}
+    chiikawa_character   10 pictures, closest mean after: {'chiikawa_character': 8, 'usagi_character': 2}
+    hachiware_character  10 pictures, closest mean after: {'hachiware_character': 6, 'chiikawa_character': 4}
+    usagi_character      10 pictures, closest mean after: {'chiikawa_character': 8, 'usagi_character': 2}
+
+section 'the changed pictures are 1x thicker lines': 30 pictures, 30 originals
+  moved from the original by  20.4 of 255 on average, pixels moved by more than 30:  15.7%, correlation 0.812
+  the two biggest changes: 3045a4591f30816d69459cf632a95fc0.jpg 30.6, 이미지 35.jpg 29.5
+  the two smallest changes: 0064.jpg 9.9, 0128.jpg 10.8
+
+  distance to each class mean picture, smaller is closer
+                     chiikawa_cha hachiware_ch usagi_charac
+  before                    1.012        1.038        1.096
+  after                     1.258        1.266        1.295
+  mean distance to a picture's own class mean: before 1.018, after 1.243
+  closest class mean after the change: {'usagi_character': 9, 'chiikawa_character': 13, 'hachiware_character': 8}
+    chiikawa_character   10 pictures, closest mean after: {'usagi_character': 4, 'chiikawa_character': 6}
+    hachiware_character  10 pictures, closest mean after: {'hachiware_character': 7, 'chiikawa_character': 3}
+    usagi_character      10 pictures, closest mean after: {'hachiware_character': 1, 'usagi_character': 5, 'chiikawa_character': 4}
+
+section 'the changed pictures are 1.5x thicker lines': 30 pictures, 30 originals
+  moved from the original by  29.2 of 255 on average, pixels moved by more than 30:  20.6%, correlation 0.729
+  the two biggest changes: 3045a4591f30816d69459cf632a95fc0.jpg 46.8, 0076.jpg 42.8
+  the two smallest changes: 0064.jpg 14.9, 0128.jpg 14.9
+
+  distance to each class mean picture, smaller is closer
+                     chiikawa_cha hachiware_ch usagi_charac
+  before                    1.012        1.038        1.096
+  after                     1.368        1.369        1.384
+  mean distance to a picture's own class mean: before 1.018, after 1.344
+  closest class mean after the change: {'usagi_character': 10, 'chiikawa_character': 10, 'hachiware_character': 10}
+    chiikawa_character   10 pictures, closest mean after: {'usagi_character': 4, 'chiikawa_character': 6}
+    hachiware_character  10 pictures, closest mean after: {'hachiware_character': 8, 'chiikawa_character': 2}
+    usagi_character      10 pictures, closest mean after: {'hachiware_character': 2, 'usagi_character': 6, 'chiikawa_character': 2}
+
+section 'the changed pictures are silhouette': 32 pictures, 32 originals
+  moved from the original by 120.1 of 255 on average, pixels moved by more than 30:  68.2%, correlation 0.213
+  the two biggest changes: 0046.jpg 234.8, 이미지 5.jpg 215.4
+  the two smallest changes: ce5d642b6e5b7625f6b1c95d48369b8d.jpg 19.5, 0063.jpg 31.1
+
+  distance to each class mean picture, smaller is closer
+                     chiikawa_cha hachiware_ch usagi_charac
+  before                    0.957        0.994        1.105
+  after                     2.351        2.308        2.298
+  mean distance to a picture's own class mean: before 0.988, after 2.329
+  closest class mean after the change: {'hachiware_character': 10, 'usagi_character': 17, 'chiikawa_character': 5}
+    chiikawa_character   11 pictures, closest mean after: {'hachiware_character': 3, 'usagi_character': 7, 'chiikawa_character': 1}
+    hachiware_character  10 pictures, closest mean after: {'hachiware_character': 3, 'chiikawa_character': 3, 'usagi_character': 4}
+    usagi_character      11 pictures, closest mean after: {'hachiware_character': 4, 'usagi_character': 6, 'chiikawa_character': 1}
+
+the silhouette change moves a picture 11.5 times as far as the grey change, 5.9 times as far as the 1x thicker change, 4.1 times as far as the 1.5x thicker change
+
+note: a distance to a class mean is dominated by how bright and how big
+      a picture is. The class means themselves are 0.204 to 0.313 apart,
+      so 'closest mean' only points at a nearer one of three similar
+      places, and does not say which name the model would answer.
