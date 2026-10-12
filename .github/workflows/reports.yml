@@ -1,0 +1,71 @@
+name: Build report PDFs
+
+# The long report is too heavy for the free Overleaf compile timeout, so it is
+# compiled here instead, on GitHub's servers, with XeLaTeX. Both reports are
+# built and the PDFs are attached to the run as artifacts.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "long_report/**"
+      - "short_report/**"
+      - ".github/workflows/reports.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install TeX Live and Korean fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex texlive-latex-extra texlive-latex-recommended \
+            texlive-fonts-recommended texlive-lang-korean latexmk
+          sudo apt-get install -y fonts-noto-cjk || true
+          sudo apt-get install -y fonts-noto-cjk-extra || true
+          sudo fc-cache -f
+          echo "--- Korean fonts seen by fontconfig ---"
+          fc-list | grep -i "CJK KR" || echo "no CJK KR font found"
+
+      - name: Build long_report/long_report.pdf
+        working-directory: long_report
+        run: |
+          time latexmk -xelatex -interaction=nonstopmode -file-line-error long_report.tex
+          grep -a "Output written" long_report.log
+
+      - name: Build short_report/short_report.pdf
+        working-directory: short_report
+        run: |
+          cp short_report_ko.tex short_report.tex
+          time latexmk -xelatex -interaction=nonstopmode -file-line-error short_report.tex
+          grep -a "Output written" short_report.log
+
+      - name: Show problems from the logs
+        if: always()
+        run: |
+          for log in long_report/long_report.log short_report/short_report.log; do
+            [ -f "$log" ] || continue
+            echo "=== $log ==="
+            grep -a -E "^!|Overfull|Underfull|LaTeX Warning|missing" "$log" | head -40 || true
+          done
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-pdfs
+          path: |
+            long_report/long_report.pdf
+            short_report/short_report.pdf
+          if-no-files-found: warn
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: latex-logs
+          path: |
+            long_report/long_report.log
+            short_report/short_report.log
+          if-no-files-found: warn
