@@ -71,6 +71,13 @@ jobs:
           pdftoppm -png -r 110 short_report/short_report.pdf preview/short
           ls preview | wc -l
 
+      - name: Measure every printed picture
+        if: always()
+        working-directory: long_report
+        run: |
+          echo "=== pdfimages -list long_report.pdf ==="
+          pdfimages -list long_report.pdf | head -200
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
